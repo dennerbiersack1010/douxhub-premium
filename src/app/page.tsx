@@ -76,13 +76,13 @@ export default function Home() {
   // Tab configurations
   const menuItems = [
     { id: "inicio", label: "Início", icon: LayoutDashboard },
-    { id: "agenda", label: "Agenda & Recepção", icon: Calendar },
+    { id: "agenda", label: "Agenda e Recepção", icon: Calendar },
     { id: "pacientes", label: "Pacientes", icon: Users },
     { id: "comercial", label: "Comercial", icon: TrendingUp },
     { id: "tratamentos", label: "Tratamentos", icon: Activity },
     { id: "financeiro", label: "Financeiro", icon: DollarSign },
-    { id: "prontuarios", label: "Prontuários & Docs", icon: FileText },
-    { id: "equipe", label: "Equipe & Comissões", icon: Briefcase },
+    { id: "prontuarios", label: "Prontuários", icon: FileText },
+    { id: "equipe", label: "Equipe", icon: Briefcase },
     { id: "automacoes", label: "Automações", icon: Zap },
     { id: "relatorios", label: "Relatórios", icon: BarChart3 },
     { id: "integracoes", label: "Integrações", icon: Network },
@@ -90,40 +90,22 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex h-screen bg-[#0f111a] text-[#f8fafc] overflow-hidden select-none font-sans relative">
+    <div className="flex h-screen bg-[#0c0d0e] text-[#f8fafc] overflow-hidden select-none font-sans relative">
       
-      {/* Background glow effects */}
-      <div className="bg-glow-purple" />
-      <div className="bg-glow-lime" />
-
       {/* SIDEBAR NAVEGAÇÃO */}
-      <aside className={`bg-[#12141d] border-r border-white/5 flex flex-col justify-between shrink-0 z-10 transition-all duration-300 ${isSidebarCollapsed ? "w-[70px]" : "w-[260px]"}`}>
+      <aside className="w-[230px] bg-[#111214] border-r border-[#1a1b1d] flex flex-col justify-between shrink-0 z-10">
         <div>
-          {/* Header Brand */}
-          <div className="h-16 flex items-center justify-between px-5 border-b border-white/5 bg-[#10121a]">
-            <div className="flex items-center gap-3 overflow-hidden">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#bcf046] to-[#86b12c] flex items-center justify-center shrink-0 shadow-lg shadow-[#bcf046]/15">
-                <span className="font-black text-black text-sm tracking-tighter">D</span>
-              </div>
-              {!isSidebarCollapsed && (
-                <div className="flex flex-col leading-none">
-                  <span className="text-xs font-black tracking-[0.18em] uppercase text-white">DOUXHUB</span>
-                  <span className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase mt-0.5">Estética OS</span>
-                </div>
-              )}
+          {/* Header Brand Logo */}
+          <div className="h-20 flex items-center px-6">
+            <div className="w-8 h-8 text-[#bcf046] flex items-center justify-center shrink-0">
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20M4 12H20M6.343 6.343L17.657 17.657M6.343 17.657L17.657 6.343" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+              </svg>
             </div>
-            
-            <button 
-              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
-              className="text-zinc-500 hover:text-white p-1 hover:bg-white/5 rounded-md transition-colors"
-              title={isSidebarCollapsed ? "Expandir" : "Recolher"}
-            >
-              <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isSidebarCollapsed ? "" : "rotate-180"}`} />
-            </button>
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-3.5 space-y-1 max-h-[calc(100vh-140px)] overflow-y-auto">
+          <nav className="px-3.5 space-y-1 overflow-y-auto">
             {menuItems.map(item => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -131,14 +113,14 @@ export default function Home() {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-lg transition-all text-left text-xs font-bold uppercase tracking-wider relative group ${
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-left text-xs font-semibold relative group ${
                     isActive 
-                      ? "bg-gradient-to-r from-[#bcf046]/10 to-transparent text-[#bcf046] border-l-2 border-[#bcf046]" 
+                      ? "bg-[#1e2022] text-[#bcf046]" 
                       : "text-zinc-400 hover:bg-white/5 hover:text-white"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#bcf046]" : "text-zinc-400 group-hover:text-white"}`} />
-                  {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                  <Icon className={`w-4.5 h-4.5 shrink-0 ${isActive ? "text-[#bcf046]" : "text-zinc-500 group-hover:text-white"}`} />
+                  <span className="truncate">{item.label}</span>
                 </button>
               );
             })}
@@ -146,19 +128,20 @@ export default function Home() {
         </div>
 
         {/* Footer User Block */}
-        <div className="p-3.5 border-t border-white/5 bg-[#10121a]">
-          <div className="flex items-center justify-between px-1 cursor-pointer group">
+        <div className="p-4 border-t border-[#1a1b1d]">
+          <div className="flex items-center justify-between cursor-pointer">
             <div className="flex items-center gap-3 overflow-hidden">
-              <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-xs font-black text-zinc-300 uppercase shrink-0">
-                AD
+              <img 
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100" 
+                alt="Dra. Camila Ribeiro" 
+                className="w-8 h-8 rounded-full object-cover border border-white/10 shrink-0"
+              />
+              <div className="overflow-hidden leading-tight">
+                <p className="text-xs font-bold text-white truncate">Dra. Camila Ribeiro</p>
+                <p className="text-[10px] text-zinc-500 font-bold truncate">Diretora clínica</p>
               </div>
-              {!isSidebarCollapsed && (
-                <div className="overflow-hidden">
-                  <p className="text-xs font-bold text-white truncate">Dra. Paula Medeiros</p>
-                  <p className="text-[9px] text-zinc-500 uppercase tracking-widest truncate">Gestora Geral</p>
-                </div>
-              )}
             </div>
+            <ChevronDown className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
           </div>
         </div>
       </aside>
@@ -166,42 +149,43 @@ export default function Home() {
       {/* MAIN CONTAINER */}
       <div className="flex-1 flex flex-col overflow-hidden z-10">
         
-        {/* TOP CONTEXT BAR */}
-        <header className="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-[#12141d]">
-          <div className="flex items-center gap-2.5 text-[10px] text-zinc-500 uppercase tracking-widest font-black">
-            <span>CLÍNICA ESTÉTICA</span>
-            <ChevronRight className="w-3 h-3 text-zinc-700" />
-            <span className="text-white">
-              {menuItems.find(i => i.id === activeTab)?.label}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-6">
-            {/* Branch switcher */}
-            <div className="relative">
-              <select 
-                value={selectedBranch}
-                onChange={e => setSelectedBranch(e.target.value)}
-                className="bg-[#141722] text-[10px] font-black uppercase tracking-wider text-zinc-300 border border-white/5 px-3 py-1.5 focus:outline-none rounded-md appearance-none pr-8 cursor-pointer"
-              >
-                <option value="Unidade Principal">Unidade Principal</option>
-                <option value="Unidade Jardins">Unidade Jardins</option>
-              </select>
-              <ChevronDown className="w-3 h-3 text-zinc-500 absolute right-3 top-2.5 pointer-events-none" />
+        {/* TOP CONTEXT BAR (Only show if NOT in Pacientes mode) */}
+        {activeTab !== "pacientes" && (
+          <header className="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-[#12141d]">
+            <div className="flex items-center gap-2.5 text-[10px] text-zinc-500 uppercase tracking-widest font-black">
+              <span>CLÍNICA ESTÉTICA</span>
+              <ChevronRight className="w-3 h-3 text-zinc-700" />
+              <span className="text-white">
+                {menuItems.find(i => i.id === activeTab)?.label}
+              </span>
             </div>
 
-            <div className="h-4 w-[1px] bg-white/5" />
+            <div className="flex items-center gap-6">
+              <div className="relative">
+                <select 
+                  value={selectedBranch}
+                  onChange={e => setSelectedBranch(e.target.value)}
+                  className="bg-[#141722] text-[10px] font-black uppercase tracking-wider text-zinc-300 border border-white/5 px-3 py-1.5 focus:outline-none rounded-md appearance-none pr-8 cursor-pointer"
+                >
+                  <option value="Unidade Principal">Unidade Principal</option>
+                  <option value="Unidade Jardins">Unidade Jardins</option>
+                </select>
+                <ChevronDown className="w-3 h-3 text-zinc-500 absolute right-3 top-2.5 pointer-events-none" />
+              </div>
 
-            <div className="flex items-center gap-3.5">
-              <Calendar className="w-4 h-4 text-zinc-500" />
-              <span className="text-xs text-zinc-400 font-semibold">Hoje, 13 de Julho</span>
+              <div className="h-4 w-[1px] bg-white/5" />
+
+              <div className="flex items-center gap-3.5">
+                <Calendar className="w-4 h-4 text-zinc-500" />
+                <span className="text-xs text-zinc-400 font-semibold">Hoje, 13 de Julho</span>
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
+        )}
 
         {/* WORKSPACE CONTENT AREA */}
-        <main className="flex-1 overflow-y-auto p-8 relative">
-          <div className="max-w-[1400px] mx-auto space-y-6">
+        <main className={`flex-1 overflow-hidden relative ${activeTab === "pacientes" ? "p-4 bg-[#0e0f11]" : "p-8 overflow-y-auto"}`}>
+          <div className={`${activeTab === "pacientes" ? "w-full h-full" : "max-w-[1400px] mx-auto space-y-6"}`}>
 
             {/* TAB 1: INÍCIO (Central de Operações) */}
             {activeTab === "inicio" && (

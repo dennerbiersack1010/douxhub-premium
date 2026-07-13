@@ -226,16 +226,16 @@ export default function PacientesModule() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-120px)] overflow-hidden font-sans select-none relative z-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-full overflow-hidden text-zinc-100 font-sans select-none">
       
       {/* COLUMN 1: PATIENTS LIST (LEFT) - 3 Columns Width */}
-      <div className="lg:col-span-3 bg-[#0d0f14] border border-white/[0.08] rounded-2xl flex flex-col h-full shadow-[0_12px_40px_rgba(0,0,0,0.6)] overflow-hidden">
+      <div className="lg:col-span-3 bg-[#131416] border border-white/[0.05] rounded-2xl flex flex-col h-full overflow-hidden">
         
         {/* Search header area */}
-        <div className="p-4.5 border-b border-white/[0.08] space-y-4 bg-[#11131a]">
+        <div className="p-4 space-y-3.5 bg-[#131416]">
           <div className="flex justify-between items-center">
-            <span className="text-[11px] font-black text-white uppercase tracking-[0.15em]">Pacientes</span>
-            <button className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-extrabold uppercase tracking-wider bg-[#1c1e27] border border-white/10 px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
+            <span className="text-[13px] font-black text-white uppercase tracking-wider">Pacientes</span>
+            <button className="flex items-center gap-1 text-[11px] text-zinc-400 font-bold bg-[#1c1d1f] border border-white/[0.06] px-3 py-1.5 rounded-lg hover:text-white transition-all">
               Todos <ChevronDown className="w-3.5 h-3.5 text-zinc-500" />
             </button>
           </div>
@@ -246,20 +246,20 @@ export default function PacientesModule() {
               placeholder="Buscar paciente..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full bg-[#171a25] border border-white/[0.08] focus:border-[#bcf046]/35 focus:outline-none rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 transition-colors"
+              className="w-full bg-[#1c1d1f] border border-white/[0.06] focus:border-[#bcf046]/30 focus:outline-none rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-zinc-500 transition-colors"
             />
-            <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3.5 top-3.5" />
+            <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-2.5" />
           </div>
 
-          <div className="flex gap-4 text-[9px] font-black uppercase tracking-wider text-zinc-500">
-            <span>Todos <strong className="text-zinc-300 font-bold ml-1">128</strong></span>
-            <span>Ativos <strong className="text-zinc-300 font-bold ml-1">66</strong></span>
-            <span>Inativos <strong className="text-zinc-300 font-bold ml-1">12</strong></span>
+          <div className="flex gap-4 text-[10px] font-black uppercase tracking-wider text-zinc-500 pt-1">
+            <span className="text-white border-b-2 border-[#bcf046] pb-2.5 cursor-pointer">Todos <strong className="text-white font-bold ml-0.5">128</strong></span>
+            <span className="cursor-pointer hover:text-zinc-300 pb-2.5">Ativos <strong className="text-zinc-500 font-bold ml-0.5">66</strong></span>
+            <span className="cursor-pointer hover:text-zinc-300 pb-2.5">Inativos <strong className="text-zinc-500 font-bold ml-0.5">12</strong></span>
           </div>
         </div>
 
         {/* Patients list */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-[#090a0e]/40">
+        <div className="flex-1 overflow-y-auto p-2 space-y-1.5 bg-transparent border-t border-white/[0.05]">
           {filteredPatients.map(p => {
             const isSelected = p.id === activePatientId;
             
@@ -273,10 +273,10 @@ export default function PacientesModule() {
               <div
                 key={p.id}
                 onClick={() => setActivePatientId(p.id)}
-                className={`p-3.5 rounded-xl flex items-center gap-3.5 cursor-pointer transition-all border ${
+                className={`p-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all border ${
                   isSelected 
-                    ? "bg-[#1f221e] border-[#bcf046]/30 shadow-md shadow-[#bcf046]/5 relative overflow-hidden" 
-                    : "bg-[#13141c]/90 border-white/[0.03] hover:border-white/10 hover:bg-[#181a24]/90"
+                    ? "bg-[#21231a] border-[#bcf046]/25 shadow-sm relative overflow-hidden" 
+                    : "bg-transparent border-transparent hover:bg-white/5"
                 }`}
               >
                 {isSelected && (
@@ -286,14 +286,18 @@ export default function PacientesModule() {
                 <img 
                   src={p.avatar} 
                   alt={p.name} 
-                  className={`w-10 h-10 rounded-full object-cover border ${isSelected ? "border-[#bcf046]/30" : "border-white/10"}`} 
+                  className={`w-9 h-9 rounded-full object-cover border ${isSelected ? "border-[#bcf046]/25" : "border-white/10"}`} 
+                  onError={(e) => {
+                    // Fallback to placeholder if Unsplash is slow
+                    e.currentTarget.src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${p.name}`;
+                  }}
                 />
                 
                 <div className="overflow-hidden flex-1 leading-tight space-y-1">
                   <p className={`text-xs font-bold truncate ${isSelected ? "text-[#bcf046]" : "text-zinc-200"}`}>{p.name}</p>
                   <p className="text-[10px] text-zinc-500 font-bold">ID {p.id} · {p.age} anos</p>
                   <div className="flex items-center gap-1.5">
-                    <span className={`w-1.5 h-1.5 rounded-full ${statusDot} shrink-0 animate-pulse`} />
+                    <span className={`w-1.5 h-1.5 rounded-full ${statusDot} shrink-0`} />
                     <span className={`text-[8px] font-black uppercase tracking-widest ${
                       isSelected && p.status === "Em tratamento" ? "text-[#bcf046]" : "text-zinc-400"
                     }`}>
@@ -307,50 +311,53 @@ export default function PacientesModule() {
         </div>
 
         {/* Add Patient Footer */}
-        <div className="p-3 border-t border-white/[0.08] bg-[#0c0d12]">
-          <button className="w-full flex items-center justify-center gap-2 py-3 bg-[#171a25] hover:bg-[#1d212f] border border-white/[0.08] text-xs font-black uppercase tracking-wider text-white rounded-xl transition-all shadow-md">
+        <div className="p-3 border-t border-white/[0.05] bg-[#131416]">
+          <button className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#1c1d1f] hover:bg-[#232528] border border-white/[0.06] text-xs font-bold uppercase tracking-wider text-white rounded-xl transition-all shadow-md">
             <Plus className="w-4 h-4 text-[#bcf046]" /> Novo paciente
           </button>
         </div>
       </div>
 
       {/* COLUMN 2: PATIENT DETAIL (CENTER) - 6 Columns Width */}
-      <div className="lg:col-span-6 flex flex-col h-full space-y-6">
+      <div className="lg:col-span-6 flex flex-col h-full space-y-4">
         
         {/* Header Profile card */}
-        <div className="bg-[#0c0d12] border border-white/[0.08] rounded-2xl p-6 shadow-[0_12px_40px_rgba(0,0,0,0.6)] space-y-5">
+        <div className="bg-[#131416] border border-white/[0.05] rounded-2xl p-5 shadow-sm space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             
             <div className="flex items-center gap-4">
               <img 
                 src={activePatient.avatar} 
                 alt={activePatient.name} 
-                className="w-12 h-12 rounded-full object-cover border border-[#bcf046]/40 shadow-lg shadow-[#bcf046]/10" 
+                className="w-11 h-11 rounded-full object-cover border border-[#bcf046]/30 shadow-md shadow-[#bcf046]/5" 
+                onError={(e) => {
+                  e.currentTarget.src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${activePatient.name}`;
+                }}
               />
               <div className="space-y-1">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <h4 className="text-base font-black text-white leading-none">{activePatient.name}</h4>
-                  <span className="text-[8px] font-black uppercase px-2 py-0.5 rounded bg-[#bcf046]/10 text-[#bcf046] border border-[#bcf046]/20">
+                  <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-[#bcf046]/10 text-[#bcf046] border border-[#bcf046]/20 leading-none">
                     Ativa
                   </span>
                 </div>
-                <p className="text-[10px] text-zinc-400 font-bold tracking-wide">
+                <p className="text-[10px] text-zinc-400 font-semibold tracking-wide leading-none">
                   ID {activePatient.id} · {activePatient.age} anos · {activePatient.phone} · {activePatient.email}
                 </p>
               </div>
             </div>
 
             {/* Action buttons */}
-            <div className="flex items-center gap-2.5">
-              <button className="px-4 py-2 border border-white/10 bg-[#171a25]/60 hover:bg-white/5 text-zinc-300 hover:text-white text-xs font-bold rounded-xl transition-all">
+            <div className="flex items-center gap-2">
+              <button className="px-3.5 py-2 border border-white/10 bg-[#1c1d1f] hover:bg-white/5 text-zinc-300 hover:text-white text-xs font-bold rounded-xl transition-all">
                 Editar perfil
               </button>
               
-              <button className="flex items-center gap-1.5 px-4.5 py-2 bg-[#bcf046] hover:bg-[#acd840] text-black text-xs font-black rounded-xl shadow-lg hover:shadow-[#bcf046]/20 transition-all">
+              <button className="flex items-center gap-1 px-3.5 py-2 bg-[#bcf046] hover:bg-[#acd840] text-black text-xs font-black rounded-xl shadow-md hover:shadow-[#bcf046]/15 transition-all">
                 Nova consulta <ChevronDown className="w-3.5 h-3.5 text-black" />
               </button>
 
-              <button className="p-2 border border-white/10 bg-[#171a25]/60 hover:bg-white/5 text-zinc-400 hover:text-white rounded-xl transition-all">
+              <button className="p-2.5 border border-white/10 bg-[#1c1d1f] hover:bg-white/5 text-zinc-400 hover:text-white rounded-xl transition-all">
                 <MoreHorizontal className="w-4 h-4" />
               </button>
             </div>
@@ -358,28 +365,28 @@ export default function PacientesModule() {
           </div>
 
           {/* Sub Navigation Tabs */}
-          <div className="border-t border-white/[0.08] pt-4 flex gap-6 overflow-x-auto text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">
-            <button onClick={() => setDetailTab("visao")} className={`pb-2.5 hover:text-white transition-all relative ${detailTab === "visao" ? "text-white" : ""}`}>
+          <div className="border-t border-white/[0.05] pt-3 flex gap-6 overflow-x-auto text-[10px] font-black uppercase tracking-wider text-zinc-500">
+            <button onClick={() => setDetailTab("visao")} className={`pb-2 hover:text-white transition-all relative ${detailTab === "visao" ? "text-white" : ""}`}>
               Visão geral
               {detailTab === "visao" && <span className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-[#bcf046]" />}
             </button>
-            <button onClick={() => setDetailTab("tratamentos")} className={`pb-2.5 hover:text-white transition-all relative ${detailTab === "tratamentos" ? "text-white" : ""}`}>
+            <button onClick={() => setDetailTab("tratamentos")} className={`pb-2 hover:text-white transition-all relative ${detailTab === "tratamentos" ? "text-white" : ""}`}>
               Tratamentos
               {detailTab === "tratamentos" && <span className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-[#bcf046]" />}
             </button>
-            <button onClick={() => setDetailTab("comercial")} className={`pb-2.5 hover:text-white transition-all relative ${detailTab === "comercial" ? "text-white" : ""}`}>
+            <button onClick={() => setDetailTab("comercial")} className={`pb-2 hover:text-white transition-all relative ${detailTab === "comercial" ? "text-white" : ""}`}>
               Comercial
               {detailTab === "comercial" && <span className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-[#bcf046]" />}
             </button>
-            <button onClick={() => setDetailTab("financeiro")} className={`pb-2.5 hover:text-white transition-all relative ${detailTab === "financeiro" ? "text-white" : ""}`}>
+            <button onClick={() => setDetailTab("financeiro")} className={`pb-2 hover:text-white transition-all relative ${detailTab === "financeiro" ? "text-white" : ""}`}>
               Financeiro
               {detailTab === "financeiro" && <span className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-[#bcf046]" />}
             </button>
-            <button onClick={() => setDetailTab("prontuarios")} className={`pb-2.5 hover:text-white transition-all relative ${detailTab === "prontuarios" ? "text-white" : ""}`}>
+            <button onClick={() => setDetailTab("prontuarios")} className={`pb-2 hover:text-white transition-all relative ${detailTab === "prontuarios" ? "text-white" : ""}`}>
               Prontuários
               {detailTab === "prontuarios" && <span className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-[#bcf046]" />}
             </button>
-            <button onClick={() => setDetailTab("timeline")} className={`pb-2.5 hover:text-white transition-all relative ${detailTab === "timeline" ? "text-white" : ""}`}>
+            <button onClick={() => setDetailTab("timeline")} className={`pb-2 hover:text-white transition-all relative ${detailTab === "timeline" ? "text-white" : ""}`}>
               Timeline
               {detailTab === "timeline" && <span className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-[#bcf046]" />}
             </button>
@@ -387,31 +394,31 @@ export default function PacientesModule() {
         </div>
 
         {/* Dynamic Detail Card + Chat Panel */}
-        <div className="flex-1 overflow-y-auto space-y-6 pr-1 pb-4">
+        <div className="flex-1 overflow-y-auto space-y-4 pr-1 pb-4">
           
           {/* Card: Ciclo do Tratamento */}
-          <div className="bg-[#0c0d12] border border-white/[0.08] rounded-2xl p-6 shadow-xl grid grid-cols-1 md:grid-cols-12 gap-6 relative overflow-hidden">
+          <div className="bg-[#131416] border border-white/[0.05] rounded-2xl p-5 grid grid-cols-1 md:grid-cols-12 gap-4 relative overflow-hidden">
             
-            {/* Visual Image representing the treatment, styled in aesthetic curves */}
-            <div className="absolute right-0 top-0 bottom-0 w-[45%] opacity-30 pointer-events-none select-none">
+            {/* Visual Image representing the treatment */}
+            <div className="absolute right-0 top-0 bottom-0 w-[45%] opacity-20 pointer-events-none select-none">
               <img 
                 src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800" 
                 alt="Spa Facial Therapy"
                 className="w-full h-full object-cover object-center" 
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0c0d12] via-transparent to-[#0c0d12]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#131416] via-transparent to-[#131416]" />
             </div>
 
             {/* Left Content Column */}
-            <div className="md:col-span-8 space-y-4.5 relative z-10">
+            <div className="md:col-span-8 space-y-4 relative z-10">
               <div>
-                <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.18em] block">Ciclo do tratamento</span>
-                <h3 className="text-sm font-black text-white mt-1.5">{activePatient.protocol}</h3>
+                <span className="text-[10px] font-black text-zinc-500 uppercase tracking-wider block">Ciclo do tratamento</span>
+                <h3 className="text-sm font-black text-white mt-1">{activePatient.protocol}</h3>
               </div>
 
               {/* Progress */}
               <div className="space-y-2">
-                <span className="text-[10px] font-bold text-zinc-400">
+                <span className="text-[11px] font-bold text-zinc-400">
                   {activePatient.sessionsCompleted} de {activePatient.sessionsTotal} sessões concluídas
                 </span>
                 
@@ -425,22 +432,21 @@ export default function PacientesModule() {
               </div>
 
               {/* Next session and badges */}
-              <div className="flex flex-wrap items-center gap-6 pt-1">
+              <div className="flex flex-wrap items-center gap-5 pt-1">
                 <div className="space-y-1">
                   <span className="text-[9px] font-black text-zinc-500 uppercase tracking-widest block">Próxima sessão</span>
                   <div className="flex items-center gap-1.5 text-xs text-white font-bold">
-                    <Calendar className="w-4 h-4 text-zinc-400" />
+                    <Calendar className="w-3.5 h-3.5 text-zinc-400" />
                     <span>{activePatient.nextSession}</span>
                   </div>
                 </div>
 
                 <div className="self-end pb-0.5">
-                  <span className="text-[8px] font-black uppercase tracking-wider text-[#bcf046] bg-[#bcf046]/5 border border-[#bcf046]/30 px-3 py-1.5 rounded-lg">
+                  <span className="text-[9px] font-black uppercase tracking-wider text-[#bcf046] bg-[#21231a] border border-[#bcf046]/20 px-2.5 py-1.5 rounded-lg">
                     Tratamento em andamento
                   </span>
                 </div>
               </div>
-
               {/* Financial status row */}
               <div className="pt-1.5">
                 <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">
@@ -450,7 +456,7 @@ export default function PacientesModule() {
             </div>
 
             {/* Right Progress Ring Column */}
-            <div className="md:col-span-4 flex flex-col items-center justify-center text-center border-l border-white/[0.08] pl-4 relative z-10">
+            <div className="md:col-span-4 flex flex-col items-center justify-center text-center border-l border-white/[0.05] pl-4 relative z-10">
               {/* Circular SVG chart */}
               <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
@@ -483,7 +489,7 @@ export default function PacientesModule() {
                 </div>
               </div>
 
-              <button className="mt-3.5 px-4 py-1.5 bg-[#171a25] hover:bg-white/5 text-white rounded-lg text-[9px] font-black uppercase tracking-wider transition-all border border-white/10 shadow-md">
+              <button className="mt-3.5 px-4 py-1.5 bg-[#1c1d1f] hover:bg-white/5 text-zinc-300 hover:text-white rounded-lg text-[9px] font-black uppercase tracking-wider transition-all border border-white/[0.06] shadow-sm">
                 Ver detalhes
               </button>
             </div>
@@ -491,10 +497,10 @@ export default function PacientesModule() {
           </div>
 
           {/* Conversations panel */}
-          <div className="bg-[#0c0d12] border border-white/[0.08] rounded-2xl flex flex-col h-[300px] shadow-xl overflow-hidden">
+          <div className="bg-[#131416] border border-white/[0.05] rounded-2xl flex flex-col h-[320px] overflow-hidden">
             
             {/* Conversations inner tabs */}
-            <div className="px-5 pt-3 border-b border-white/[0.08] bg-[#11131a] flex gap-5 text-[10px] font-black uppercase tracking-widest text-zinc-500">
+            <div className="px-5 pt-3 border-b border-white/[0.05] bg-[#131416] flex gap-5 text-[10px] font-black uppercase tracking-widest text-zinc-500">
               <button className="pb-2 text-white border-b-2 border-[#bcf046] relative font-bold">Conversas</button>
               <button className="pb-2 hover:text-white transition-colors">Anotações</button>
               <button className="pb-2 hover:text-white transition-colors">Arquivos</button>
@@ -502,7 +508,7 @@ export default function PacientesModule() {
             </div>
 
             {/* Chat logs */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#08090d]/30">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-transparent">
               {activePatient.messages.length > 0 ? (
                 activePatient.messages.map((msg, index) => {
                   const isClinic = msg.sender === "clinic";
@@ -512,9 +518,12 @@ export default function PacientesModule() {
                       className={`flex gap-3 text-xs max-w-[85%] ${isClinic ? "ml-auto flex-row-reverse" : ""}`}
                     >
                       <img 
-                        src={isClinic ? "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" : activePatient.avatar} 
+                        src={isClinic ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150" : activePatient.avatar} 
                         alt="sender" 
                         className="w-7 h-7 rounded-full object-cover shrink-0 border border-white/10" 
+                        onError={(e) => {
+                          e.currentTarget.src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${isClinic ? 'clinic' : activePatient.name}`;
+                        }}
                       />
                       
                       <div className="space-y-1">
@@ -524,8 +533,8 @@ export default function PacientesModule() {
                         </div>
                         <div className={`p-3 rounded-2xl leading-relaxed text-white text-xs ${
                           isClinic 
-                            ? "bg-[#231842] border border-purple-500/15 rounded-tr-none" 
-                            : "bg-[#141722] border border-white/5 rounded-tl-none"
+                            ? "bg-[#1c1d1f] border border-white/[0.06] rounded-tr-none" 
+                            : "bg-[#1c1d1f] border border-white/[0.06] rounded-tl-none"
                         }`}>
                           <p>{msg.text}</p>
                           {isClinic && (
@@ -547,7 +556,7 @@ export default function PacientesModule() {
             </div>
 
             {/* Chat Input form */}
-            <form onSubmit={handleSendMessage} className="p-3.5 border-t border-white/[0.08] bg-[#0c0d12] flex items-center gap-2">
+            <form onSubmit={handleSendMessage} className="p-3 border-t border-white/[0.05] bg-[#131416] flex items-center gap-2">
               <button type="button" className="text-zinc-500 hover:text-white p-1 hover:bg-white/5 rounded-md shrink-0">
                 <Smile className="w-4.5 h-4.5" />
               </button>
@@ -560,12 +569,12 @@ export default function PacientesModule() {
                 placeholder="Digite sua mensagem..."
                 value={chatMessage}
                 onChange={e => setChatMessage(e.target.value)}
-                className="flex-1 bg-[#171a25] border border-white/[0.08] focus:outline-none rounded-xl px-4 py-2.5 text-xs text-white focus:border-white/20 transition-colors"
+                className="flex-1 bg-[#1c1d1f] border border-white/[0.06] focus:outline-none rounded-xl px-4 py-2 text-xs text-white focus:border-white/20 transition-colors"
               />
 
               <button 
                 type="submit" 
-                className="p-2.5 bg-[#bcf046] hover:bg-[#acd840] text-black rounded-xl transition-all shrink-0 shadow-md shadow-[#bcf046]/10"
+                className="p-2 bg-[#bcf046] hover:bg-[#acd840] text-black rounded-xl transition-all shrink-0 shadow-md shadow-[#bcf046]/10"
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
@@ -578,13 +587,12 @@ export default function PacientesModule() {
       </div>
 
       {/* COLUMN 3: FINANCE & ACTIONS (RIGHT) - 3 Columns Width */}
-      <div className="lg:col-span-3 flex flex-col h-full space-y-6">
+      <div className="lg:col-span-3 flex flex-col h-full space-y-4">
         
         {/* Card: Resumo Financeiro */}
-        <div className="bg-[#0c0d12] border border-white/[0.08] rounded-2xl p-5 space-y-4 shadow-[0_12px_40px_rgba(0,0,0,0.6)]">
-          <div className="border-b border-white/[0.08] pb-3">
-            <span className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.15em]">Financeiro Geral</span>
-            <h4 className="text-xs font-black text-white uppercase tracking-wider mt-0.5">Resumo financeiro</h4>
+        <div className="bg-[#131416] border border-white/[0.05] rounded-2xl p-4.5 space-y-4 shadow-sm">
+          <div className="border-b border-white/[0.05] pb-3">
+            <h4 className="text-xs font-black text-white uppercase tracking-wider">Resumo financeiro</h4>
           </div>
 
           <div className="space-y-4 text-xs font-bold leading-none">
@@ -598,24 +606,24 @@ export default function PacientesModule() {
               <span className="text-white">{activePatient.totalReceived}</span>
             </div>
 
-            <div className="flex justify-between items-center border-t border-white/[0.08] pt-3.5 mt-1">
+            <div className="flex justify-between items-center border-t border-white/[0.05] pt-3.5 mt-1">
               <span className="text-zinc-400">Em aberto</span>
-              <span className="text-rose-500 font-black text-sm">{activePatient.totalOpen}</span>
+              <span className="text-amber-500 font-black text-sm">{activePatient.totalOpen}</span>
             </div>
           </div>
 
-          <button className="w-full py-2.5 bg-transparent border border-white/10 hover:bg-white/5 text-zinc-300 hover:text-white rounded-xl text-xs font-bold transition-all mt-2.5">
+          <button className="w-full py-2 bg-transparent border border-white/10 hover:bg-white/5 text-zinc-300 hover:text-white rounded-xl text-xs font-bold transition-all mt-2">
             Ver detalhes financeiros
           </button>
         </div>
 
         {/* Card: Ações de Hoje */}
-        <div className="bg-[#0c0d12] border border-white/[0.08] rounded-2xl p-5 flex-1 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.6)] min-h-[300px]">
+        <div className="bg-[#131416] border border-white/[0.05] rounded-2xl p-4.5 flex-1 flex flex-col justify-between shadow-sm min-h-[300px]">
           
           <div className="space-y-4 flex-1">
-            <div className="flex justify-between items-center border-b border-white/[0.08] pb-3">
+            <div className="flex justify-between items-center border-b border-white/[0.05] pb-3">
               <h4 className="text-xs font-black text-white uppercase tracking-wider">Ações de hoje</h4>
-              <span className="text-[10px] font-black uppercase text-black bg-[#bcf046] px-2 py-0.5 rounded-md">
+              <span className="text-[10px] font-black uppercase text-black bg-[#bcf046] px-2 py-0.5 rounded-md leading-none">
                 4
               </span>
             </div>
@@ -629,7 +637,7 @@ export default function PacientesModule() {
             </div>
           </div>
 
-          <button className="w-full py-2.5 bg-transparent border border-white/10 hover:bg-white/5 text-zinc-300 hover:text-white rounded-xl text-xs font-bold transition-all mt-4 shrink-0">
+          <button className="w-full py-2 bg-transparent border border-white/10 hover:bg-white/5 text-zinc-300 hover:text-white rounded-xl text-xs font-bold transition-all mt-4 shrink-0">
             Ver todas as ações
           </button>
         </div>
@@ -647,22 +655,25 @@ export default function PacientesModule() {
 function TaskCheckbox({ label, pro, desc }: { label: string; pro: string; desc: string }) {
   const [checked, setChecked] = useState(false);
   return (
-    <label className="flex items-center gap-3.5 cursor-pointer group select-none">
+    <label className="flex items-start gap-3 cursor-pointer group select-none">
       <input
         type="checkbox"
         checked={checked}
         onChange={() => setChecked(!checked)}
         className="hidden"
       />
-      <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-all ${
+      <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
         checked ? "bg-[#bcf046] border-[#bcf046]" : "bg-transparent border-white/10 group-hover:border-white/20"
       }`}>
-        {checked && <CheckCheck className="w-3.5 h-3.5 text-black font-black" />}
+        {checked && <CheckCheck className="w-3 h-3 text-black font-black" />}
       </div>
       
-      <div className="flex-1 flex justify-between leading-none">
-        <span className={`font-semibold ${checked ? "text-zinc-500 line-through" : "text-zinc-300 group-hover:text-white"}`}>{label}</span>
-        <span className="text-[10px] text-zinc-500 font-bold">{pro}</span>
+      <div className="flex-1 leading-none space-y-1">
+        <div className="flex justify-between">
+          <span className={`text-[11px] font-bold ${checked ? "text-zinc-500 line-through" : "text-zinc-300 group-hover:text-white"}`}>{label}</span>
+          <span className="text-[10px] text-zinc-500 font-bold">{pro}</span>
+        </div>
+        <p className="text-[9px] text-zinc-500 font-semibold">{desc}</p>
       </div>
     </label>
   );
