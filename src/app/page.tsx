@@ -67,7 +67,7 @@ const MOCK_TREATMENTS = [
 // ─────────────────────────────────────────────
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("inicio");
+  const [activeTab, setActiveTab] = useState("pacientes");
   const [selectedBranch, setSelectedBranch] = useState("Unidade Principal");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [appointments, setAppointments] = useState(MOCK_APPOINTMENTS);
