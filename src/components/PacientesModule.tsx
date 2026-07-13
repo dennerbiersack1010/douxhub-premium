@@ -12,7 +12,8 @@ import {
   Send,
   CheckCheck,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  MessageSquare
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
