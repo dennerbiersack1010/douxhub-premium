@@ -1,26 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Outfit', var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+  
+  --color-accent-lime: #bcf046;
+  --color-bg-deep: #0f111a;
+  --color-bg-card: #181b28;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* High contrast dark theme palette */
+  --bg-primary: #0f111a;          /* Rich dark slate, not pitch black */
+  --bg-secondary: #181b28;        /* Lighter, distinct card background */
+  --bg-tertiary: #1f2335;
+  
+  --accent-lime: #bcf046;
+  --accent-lime-glow: rgba(188, 240, 70, 0.35);
+  --accent-purple: #9f5cf5;
+  --accent-purple-glow: rgba(159, 92, 245, 0.25);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  
+  --border-glass: rgba(255, 255, 255, 0.1); /* Highly visible 10% opacity border */
+  --border-glass-focus: rgba(188, 240, 70, 0.45);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base resets & font */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  height: 100vh;
+  position: relative;
+}
+
+/* Highly visible blur highlights */
+.bg-glow-purple {
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(159, 92, 245, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-glow-lime {
+  position: absolute;
+  bottom: -150px;
+  left: 20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(188, 240, 70, 0.08) 0%, transparent 70%);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bcf046;
+}
+
+/* High Contrast Glassmorphism */
+.glass-panel {
+  background: linear-gradient(135deg, #181b28 0%, #12141d 100%);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.glass-panel-active {
+  border-color: rgba(188, 240, 70, 0.35);
+  box-shadow: 0 15px 35px rgba(188, 240, 70, 0.05);
+}
+
+.glass-card-list {
+  background: #181b28;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.25s ease-in-out;
+}
+
+.glass-card-list:hover {
+  background: #202436;
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.btn-lime {
+  background: #bcf046;
+  color: #000;
+  box-shadow: 0 4px 20px rgba(188, 240, 70, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-lime:hover {
+  background: #cbf95c;
+  box-shadow: 0 4px 25px rgba(188, 240, 70, 0.55);
+}
+
+.glow-lime-text {
+  color: #bcf046;
+  text-shadow: 0 0 10px rgba(188, 240, 70, 0.3);
+}
+
+.glass-input {
+  background: #12141d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  transition: all 0.25s ease;
+}
+
+.glass-input:focus {
+  border-color: var(--border-glass-focus);
+  box-shadow: 0 0 12px rgba(188, 240, 70, 0.15);
+  background: #181b28;
 }
